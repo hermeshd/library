@@ -401,6 +401,7 @@ body {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     transition: all 0.15s ease;
+    outline: none;
 }
 
 .add-book-button:hover {
@@ -412,7 +413,6 @@ body {
 
 .add-book-button:active {
     animation: bounce 0.8s cubic-bezier(0.25, 1.5, 0.5, 1);
-    ;
 }
 
 @keyframes bounce {
@@ -486,4 +486,248 @@ body {
 
 .stats-for-nerds .two-column {
     grid-column: 1 / -1;
+}
+
+.add-book-dialog {
+    z-index: 2;
+    margin: auto;
+    border-radius: 12px;
+    padding: 2rem 2rem 1rem 2rem;
+    background-color: var(--card-background-color);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 2px solid var(--gray-background);
+}
+
+.add-book-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* .add-book-dialog form > * {
+    border: 1px solid red;
+} */
+
+.add-book-dialog form {
+    display: grid;
+    gap: 1rem;
+}
+
+.add-book-dialog img {
+    width: 7rem;
+    height: 7rem;
+    margin: auto;
+}
+
+.add-book-dialog .input-container {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.add-book-dialog .text-input {
+    border-radius: 12px;
+    border: 2px solid var(--gray-background);
+    padding: 0.5rem;
+    color: var(--text-color);
+    background-color: var(--gray-background);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+    height: 3rem;
+    resize: none;
+    overflow: hidden;
+}
+
+.add-book-dialog .input-container {
+    position: relative;
+}
+
+.add-book-dialog .text-input:focus,
+.add-book-dialog .text-input:not(:placeholder-shown) {
+    border: 2px solid var(--green-accent);
+    transition: all 0.3s ease;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.add-book-dialog label {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.add-book-dialog .text-label {
+    color: var(--text-color);
+    font-weight: normal;
+    color: lightgray;
+    position: absolute;
+    top: 0.8rem;
+    left: 0.6rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-container .text-input:focus+.text-label,
+.input-container .text-input:not(:placeholder-shown)+.text-label {
+    top: -0.1rem;
+    left: 0.6rem;
+    color: var(--card-background-color);
+    background-color: var(--green-accent);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.input-container .text-input::placeholder {
+    color: transparent;
+    /* Hide placeholder text */
+}
+
+.add-book-dialog .checkbox-container {
+    display: grid;
+    padding-left: 0.6rem;
+    grid-template-rows: repeat(2, min-content);
+    gap: 0.5rem;
+    justify-items: center;
+}
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    .checkbox-container input[type=checkbox] {
+        --active: #4CAF50;
+        --active-inner: #fcfcfc;
+        --focus: 2px #4CAF50;
+        --border: #e0e0e0;
+        --border-hover: #4CAF50;
+        --background: #fcfcfc;
+        --disabled: #F6F8FF;
+        --disabled-inner: #E1E6F9;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        height: 21px;
+        outline: none;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+        border: 1px solid var(--bc, var(--border));
+        background: var(--b, var(--background));
+        transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+    }
+
+    .checkbox-container input[type=checkbox]:after {
+        content: "";
+        display: block;
+        left: 0;
+        top: 0;
+        position: absolute;
+        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+    }
+
+    .checkbox-container input[type=checkbox]:checked {
+        --b: var(--active);
+        --bc: var(--active);
+        --d-o: .3s;
+        --d-t: .6s;
+        --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+    }
+
+    .checkbox-container input[type=checkbox]:disabled {
+        --b: var(--disabled);
+        cursor: not-allowed;
+        opacity: 0.9;
+    }
+
+    .checkbox-container input[type=checkbox]:disabled:checked {
+        --b: var(--disabled-inner);
+        --bc: var(--border);
+    }
+
+    .checkbox-container input[type=checkbox]:disabled+label {
+        cursor: not-allowed;
+    }
+
+    .checkbox-container input[type=checkbox]:hover:not(:checked):not(:disabled) {
+        --bc: var(--border-hover);
+    }
+
+    .checkbox-container input[type=checkbox]:focus {
+        box-shadow: 0 0 0 var(--focus);
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch) {
+        width: 21px;
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch):after {
+        opacity: var(--o, 0);
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch):checked {
+        --o: 1;
+    }
+
+    .checkbox-container input[type=checkbox]+label {
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch) {
+        border-radius: 7px;
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch):after {
+        width: 5px;
+        height: 9px;
+        border: 2px solid var(--active-inner);
+        border-top: 0;
+        border-left: 0;
+        left: 7px;
+        top: 4px;
+        transform: rotate(var(--r, 20deg));
+    }
+
+    .checkbox-container input[type=checkbox]:not(.switch):checked {
+        --r: 43deg;
+    }
+}
+
+.checkbox-container * {
+    box-sizing: inherit;
+}
+
+.checkbox-container *:before,
+.checkbox-container *:after {
+    box-sizing: inherit;
+}
+
+.add-book-dialog button {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    align-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+    width: 100%;
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: none;
+    background-color: var(--card-background-color);
+    color: var(--green-accent);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-book-dialog button:hover {
+    background-color: var(--green-accent);
+    color: var(--card-background-color);
+}
+
+.add-book-dialog button:active {
+    animation: bounce 0.8s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
