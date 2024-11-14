@@ -10,7 +10,7 @@ const myLibrary = [];
 function Book(title, author, numberOfPages, read) {
     this.title = title;
     this.author = author;
-    this.numberOfPages = parseInt(numberOfPages);
+    this.numberOfPages = numberOfPages;
     this.read = read;
     this.info = function () {
         return this.title + " by " + this.author + ", " + this.numberOfPages + " pages, " + (this.read ? "read" : "not read yet");
@@ -130,7 +130,18 @@ function populateLibrary() {
 
         editButton.addEventListener("click", () => {
 
-            addBookDialog.querySelector('form').removeEventListener('submit', addNewBook());
+            function editBook() {
+                book.title = document.querySelector("#title").value;
+                book.author = document.querySelector("#author").value;
+                book.numberOfPages = parseInt(document.querySelector("#numberOfPages").value)
+                book.read = document.querySelector("#read").checked;
+                populateLibrary();
+                populateNerdStats();
+                setupEventListeners();
+                addBookDialog.close();
+            }
+
+            addBookDialog.querySelector('form').removeEventListener('submit', addNewBook);
 
             //setupEventListeners();
 
@@ -141,22 +152,34 @@ function populateLibrary() {
             document.querySelector("#read").checked = book.read;
 
             // Form submission
-            addBookDialog.querySelector('form').addEventListener('submit', (event) => {
-                event.preventDefault();
-                book.title = document.querySelector("#title").value;
-                book.author = document.querySelector("#author").value;
-                book.numberOfPages = document.querySelector("#numberOfPages").value;
-                book.read = document.querySelector("#read").checked;
-                populateLibrary();
-                populateNerdStats();
-                setupEventListeners();
-                addBookDialog.close();
-            });
+            addBookDialog.querySelector('form').addEventListener('submit', editBook);
 
             // Auto resize textarea in dialog form
             document.querySelectorAll("textarea").forEach(textarea => {
                 textarea.style.height = textarea.scrollHeight + 'px';
             });
+
+            //Change the submit button text
+            const submitButton = document.querySelector(".add-book-dialog button");
+            submitButton.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16.5 3.49998C16.8978 3.10216 17.4374 2.87866 18 2.87866C18.2786 2.87866 18.5544 2.93353 18.8118 3.04014C19.0692 3.14674 19.303 3.303 19.5 3.49998C19.697 3.69697 19.8532 3.93082 19.9598 4.18819C20.0665 4.44556 20.1213 4.72141 20.1213 4.99998C20.1213 5.27856 20.0665 5.55441 19.9598 5.81178C19.8532 6.06915 19.697 6.303 19.5 6.49998L7 19L3 20L4 16L16.5 3.49998Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Edit Book
+                <style>
+                .add-book-dialog button {
+                    background-color: var(--card-background-color);
+                    color: var(--orange-accent);
+                }
+
+                .add-book-dialog button:hover {
+                    background-color: var(--orange-accent);
+                    color: var(--card-background-color);
+                }
+                </style>
+            `;
+
         });
 
         removeButton.addEventListener("click", () => {
@@ -197,7 +220,7 @@ function setupEventListeners() {
     });
 
     // Form submission
-    addBookDialog.querySelector('form').addEventListener('submit', addNewBook());
+    addBookDialog.querySelector('form').addEventListener('submit', addNewBook);
 
     //Sort z-index issues
     document.querySelector(".sort select").addEventListener("focus", () => {
@@ -275,7 +298,7 @@ function populateNerdStats() {
 function addNewBook() {
     const title = document.querySelector("#title").value;
     const author = document.querySelector("#author").value;
-    const numberOfPages = document.querySelector("#numberOfPages").value;
+    const numberOfPages = parseInt(document.querySelector("#numberOfPages").value);
     const read = document.querySelector("#read").checked;
 
     const newBook = new Book(title, author, numberOfPages, read);
